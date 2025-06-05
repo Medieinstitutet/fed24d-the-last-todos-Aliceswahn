@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type Todo = {
   id: number
@@ -8,18 +8,30 @@ type Todo = {
 }
 
 function App() {
-  const [todos] = useState<Todo[]>([
-    { id: 1, text: 'Läs klart veckans bok', done: false },
-    { id: 2, text: 'Boka tid för vaccination', done: false },
-    { id: 3, text: 'Tvätta bilen', done: false },
-  ])
+  const [todos, setTodos] = useState<Todo[]>(() => {
+    const stored = localStorage.getItem("todos")
+    return stored ? JSON.parse(stored) : [
+      { id: 1, text: 'Läs klart veckans bok', done: false },
+      { id: 2, text: 'Boka tid för vaccination', done: false },
+      { id: 3, text: 'Tvätta bilen', done: false },
+    ]
+  })
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }, [todos])
+
+  const handleComplete = (id: number) => {
+    const updatedTodos = todos.filter(todo => todo.id !== id)
+    setTodos(updatedTodos)
+  }
 
   return (
     <main>
       <h1>Todo-lista</h1>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>
+          <li key={todo.id} onClick={() => handleComplete(todo.id)}>
             {todo.text}
           </li>
         ))}
@@ -29,4 +41,5 @@ function App() {
 }
 
 export default App
+
 
