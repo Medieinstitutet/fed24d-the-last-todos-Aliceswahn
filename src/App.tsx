@@ -1,5 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from 'react'
+import TodoItem from './components/TodoItem'
 
 type Todo = {
   id: number
@@ -31,11 +32,15 @@ function App() {
       <h1>Todo-lista</h1>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id} onClick={() => handleComplete(todo.id)}>
-            {todo.text}
-          </li>
+          <TodoItem key={todo.id} todo={todo} onComplete={handleComplete} />
         ))}
       </ul>
+      <button onClick={() => {
+  localStorage.removeItem("todos");
+  window.location.reload();
+}}>
+  Återställ lista
+</button>
     </main>
   )
 }
