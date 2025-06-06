@@ -39,11 +39,11 @@ function App() {
         ))}
       </ul>
       <button onClick={() => {
-  localStorage.removeItem("todos");
-  window.location.reload();
-}}>
-  Återställ lista
-</button>
+       localStorage.removeItem("todos");
+       window.location.reload();
+       }}>
+       Återställ lista
+     </button>
     </main>
   )
 }
